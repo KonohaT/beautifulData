@@ -3,7 +3,7 @@ package handwritten;
 public class Frontend {
 
     private double rate;
-    private double[][][] weight;
+    public static double[][][] weight=new double[10][10][65]; 
 
     public void setRate(double rate){
         this.rate=rate;
@@ -13,9 +13,6 @@ public class Frontend {
         return rate;
     }
 
-    public void setWeight(double[][][] weight){
-        this.weight=weight;
-    }
     public void getWeight(){
         for(int i=0; i<10; i++) {
             for(int j=i+1; j<10; j++) {
