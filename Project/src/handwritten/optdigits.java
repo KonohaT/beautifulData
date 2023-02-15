@@ -8,6 +8,10 @@ import java.text.*;
 class optdigits {
     private double rate; // the learning rate of the perceptrons
     private double[][][] weight = Frontend.weight;
+	//There are 63 nodes in the neural network, each tied with a weight. There are 65 weights for every i and j relationship.
+	// There are 65*9! weights 
+	// x is 65 elements long, x[0..63] is the data, x[64] is the result
+    // i is the true number, j is the false number
     // the weight matrix for the perceptrons, weight[i][j] is the 
     //weights for the perceptron "i" vs "j"
     // this matrix is a strictly upper triangular matrix
@@ -31,12 +35,10 @@ class optdigits {
 		System.out.println();
 		for(int k=0; k<65; k++) {
 		    System.out.print(weight[i][j][k]+",");
-			num++;
 		}
 		System.out.println();
 	    }
 	}
-	System.out.println(num);
     }
 
     // calculate the output of the perceptron before sign
@@ -75,18 +77,17 @@ class optdigits {
 	w[0] += coe;
 	//System.out.println(w[0]);
 	for(int i=0; i<64; i++) {
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//try {
+			//Thread.sleep(100);
+		//} catch (InterruptedException e) {
+			//e.printStackTrace();
+		//}
 	    if((t - o) * x[i] > 0) {
 		res = true;
 	    }
 	    w[i+1] += coe * x[i];
-		System.out.print(d1+","+d2+"["+(i+1)+"]"+":");
-		System.out.println(w[i+1]);
+		//System.out.print(d1+","+d2+"["+(i+1)+"]"+":");
+		//System.out.println(w[i+1]);
 	}
 	return res;
     }
@@ -132,7 +133,7 @@ class optdigits {
 	    }
 	    epoch++;
 	}
-
+	//The higher the epoch, the more tries it took to get it right
 	return epoch;
     }
 
@@ -141,7 +142,7 @@ class optdigits {
     /*
      * train all the perceptrons with the whole trainning data
 	 * Upper triangular matrix
-     * return the epochs used
+     * 
 	 * Epoch: 0,1 0,2 0,3...1,2 1,3 1,4... 2,3, 2,4... 8,9
 	 * trainbi updates the weight[][][]
      */
@@ -233,6 +234,7 @@ class optdigits {
 	    String str = strs.get(i);
 	    // System.out.println(str);
 	    String[] el = str.split(",");
+		//System.out.print(el[64]);
 	    for(int j=0; j<el.length; j++) {
 		data[i][j] = Integer.valueOf(el[j]);
 	    }
@@ -266,7 +268,7 @@ class optdigits {
 	    }
 	}
 
-	 od.dispWeight();
+	od.dispWeight();
 
 	// calculate the accuracy for the training data
 	int[][] confusion = od.test(traindata);
@@ -287,12 +289,12 @@ class optdigits {
 	k = 0;
 	for(int i=0; i<10; i++) {
 	    for(int j=i+1; j<10; j++) {
-		label[k++] = new String("$<$"+i+","+j+"$>$");
+		label[k++] = new String("("+i+","+j+"):");
 	    }
 	}
 	DecimalFormat df = new DecimalFormat("#.##");
 	for(int i=0; i<confusion.length; i++) {
-	    System.out.println(label[i]+" & "+epoch[i]+" & "+df.format(trainacc[i])+" & "+df.format(testacc[i])+" & "+confusion[i][0]+" & "+confusion[i][1]+" & "+confusion[i][2]+" & "+confusion[i][3]+"\\\\");
+	    System.out.println(label[i]+" Epoch: "+epoch[i]+" Training Accuracy:"+df.format(trainacc[i])+" Testing Accuracy "+df.format(testacc[i])+" & "+confusion[i][0]+" & "+confusion[i][1]+" & "+confusion[i][2]+" & "+confusion[i][3]+"\\\\");
 	}
     }
 }
