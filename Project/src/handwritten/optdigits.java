@@ -7,7 +7,7 @@ import java.text.*;
 
 class optdigits {
     private double rate; // the learning rate of the perceptrons
-    private double[][][] weight = new double[10][10][65]; 
+    private double[][][] weight = Frontend.weight;
     // the weight matrix for the perceptrons, weight[i][j] is the 
     //weights for the perceptron "i" vs "j"
     // this matrix is a strictly upper triangular matrix
@@ -41,6 +41,7 @@ class optdigits {
 
     // calculate the output of the perceptron before sign
     private double calcOutput(double[] w, int[] x) {
+	//w: [1][2][0], [1][2][1]...*65
 	double res = w[0];
 	for(int i=0; i<64; i++) {
 	    res += w[i+1] * x[i];
@@ -48,14 +49,19 @@ class optdigits {
 	return res;
     }
     private int sign(double x) {
+		//If x is greater than 0, return 1, else return -1
 	return x>0 ? 1 : -1;
     }
+
+
+
 
     // x is 65 elements long, x[0..63] is the data, x[64] is the result
     // i is the true number, j is the false number
     private boolean updateWeight(int d1, int d2, int[] x) {
 	boolean res = false; // default to weight not changed
 
+	//If x[64]==d1 set it to 1, else if x[64]==d2 set it to -1, else set it to 0
 	int t = x[64]==d1 ? 1 : (x[64]==d2 ? -1 : 0);
 	if(t == 0) {
 	    throw new RuntimeException("Invalid input!");
@@ -67,26 +73,39 @@ class optdigits {
 
 	// updating the weight
 	w[0] += coe;
+	//System.out.println(w[0]);
 	for(int i=0; i<64; i++) {
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    if((t - o) * x[i] > 0) {
 		res = true;
 	    }
 	    w[i+1] += coe * x[i];
+		System.out.print(d1+","+d2+"["+(i+1)+"]"+":");
+		System.out.println(w[i+1]);
 	}
-
 	return res;
     }
+
+
+
 
     /*
      * train a single perceptron d1 vs d2, where output 1 mean d1, -1 mean d2
      * return the epoch used
      */
     private int trainbi(int d1, int d2, int[][] traindata) {
+	//d1 d2: 1:2,1:3,1:4,2:3,2:4...
 	if(d1 >= d2) {
 	    throw new RuntimeException("invalid input!");
 	}
 
 	// randomly set the weight between -1 and 1
+	// [1][2][0],　[1][2][1], [1][2][0]...*65
 	for(int i=0; i<65; i++) {
 	    weight[d1][d2][i] = Math.random() * 2 - 1;
 	    //weight[d1][d2][i] = 0;
@@ -94,9 +113,13 @@ class optdigits {
 
 	int epoch = 0;
 	while(true) {
+		
 	    int[][] con = testbi(d1, d2, traindata);
+		//Con[0][0]:TP, Con[1][1]:TN, Con[0][1]: FP, Con[1][0]:FN
+		//OldAcc calculates rate of success
 	    double oldacc = (con[0][0]+con[1][1])*1.0/(con[0][0]+con[0][1]+con[1][0]+con[1][1]);
 	    for(int i=0; i<traindata.length; i++) {
+		//If a line in traindata contains d1 or d2
 		if(traindata[i][64]==d1 || traindata[i][64]==d2) {
 		    updateWeight(d1, d2, traindata[i]);
 		}
@@ -113,9 +136,14 @@ class optdigits {
 	return epoch;
     }
 
+
+
     /*
      * train all the perceptrons with the whole trainning data
+	 * Upper triangular matrix
      * return the epochs used
+	 * Epoch: 0,1 0,2 0,3...1,2 1,3 1,4... 2,3, 2,4... 8,9
+	 * trainbi updates the weight[][][]
      */
     public int[][] train(int[][] traindata) {
 	int[][] epoch = new int[10][10];
@@ -132,6 +160,8 @@ class optdigits {
      * test one perceptron(d1,d2) on the test data set, and return the confusion matrix.
      */
     private int[][] testbi(int d1, int d2, int[][] testdata) {
+	//True positive, false positive, true negative, false negative
+	//Check values. d1=1234... d2=2345....
 	int tp=0, fp=0, tn=0, fn=0;
 	for(int i=0; i<testdata.length; i++) {
 	    if(testdata[i][64]==d1) {
@@ -151,6 +181,7 @@ class optdigits {
 	    }
 	}
 
+	//returns test results
 	return new int[][]{{tp,fn},{fp,tn}};
     }
 
@@ -176,11 +207,9 @@ class optdigits {
 	return confusion;
     }
 
-    public static void usage() {
-	System.out.println("optdigit rate");
-    }
     public static int[][] readFile(String filename) {
 	// read the data from the file
+	//Add them all on a string
 	ArrayList<String> strs = new ArrayList<String>();
 	try{
 	    FileInputStream instream = new FileInputStream(filename);
