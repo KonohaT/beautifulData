@@ -8,7 +8,7 @@ public class Main {
     Frontend f = new Frontend();
     f.setRate(0.5);
 
-	int[][] traindata = optdigits.readFile("beautifulData/Optical-Recognition-of-Handwritten-Digits-Dataset-in-Java/optdigits.test");
+	int[][] traindata = optdigits.readFile("beautifulData/Project/optdigits.test");
 	int[][] testdata = optdigits.readFile("beautifulData/Optical-Recognition-of-Handwritten-Digits-Dataset-in-Java/optdigits.train");
 
 	// train the perceptrons
