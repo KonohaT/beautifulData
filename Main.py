@@ -1,9 +1,8 @@
 import numpy
 from NeuralNetwork import NeuralNetwork
 
-
 def train(nn, training_data_list, epochs=1):
-    for _ in range(epochs):
+    for epoch in range(epochs):
         for record in training_data_list:
             all_values = record.split(',')
 
@@ -12,6 +11,8 @@ def train(nn, training_data_list, epochs=1):
             targets[int(all_values[0])] = 0.99
 
             nn.train(inputs, targets)
+        nn.save_weights(epoch)
+
 
 
 def test(nn, test_data_list):

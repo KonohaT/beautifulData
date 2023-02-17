@@ -1,5 +1,6 @@
 import numpy
 import scipy
+import csv
 
 
 class NeuralNetwork:
@@ -32,9 +33,19 @@ class NeuralNetwork:
         self.who += self.lr * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)),
                                         numpy.transpose(hidden_outputs))
         self.wih += self.lr * numpy.dot((hidden_errors * hidden_outputs * (1.0 - hidden_outputs)),
+
                                         numpy.transpose(inputs))
 
-
+    def save_weights(self, epoch):
+        with open(f'weights_epoch_{epoch}.csv', mode='w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Weight', 'Input Node', 'Hidden Node', 'Output Node', 'Layer Index'])
+            for i, wih_row in enumerate(self.wih):
+                for j, wih in enumerate(wih_row):
+                    writer.writerow([wih, j, i, -1, 1])
+            for i, who_row in enumerate(self.who):
+                for j, who in enumerate(who_row):
+                    writer.writerow([who, j, -1, i, 2])
 
     def query(self, inputs_list):
         inputs = numpy.array(inputs_list, ndmin=2).T
