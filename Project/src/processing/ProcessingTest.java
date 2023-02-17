@@ -1,8 +1,9 @@
 package src.processing;
 import processing.core.PApplet;
 
-import java.io.File;
+import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;//Checking branch merging
+
 
 public class ProcessingTest extends PApplet{
     int w = 600;
@@ -10,17 +11,30 @@ public class ProcessingTest extends PApplet{
     int movement = w / 100;
     int y=h/2;
     int x = w/2;
+
+    String weightPath = "beautifulData/Project/NetworkData/weights.csv";
+    String nodePath = "beautifulData/Project/NetworkData/nodePriority.csv";
+    File weightsCSV = new File(weightPath);
+    File nodeCSV = new File(nodePath);
+
+
+    static BufferedReader weightsReader;
+    BufferedReader nodeReader;
+
+    {
+        try {
+            weightsReader = new BufferedReader(new FileReader(weightsCSV));
+            nodeReader = new BufferedReader(new FileReader(nodeCSV));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     @Override
     public void settings() {
         size(w, h);
-        String weightPath;
-        //String nodePath;
-        //File weightsCSV = new File(weightPath);
-        //File nodeCSV = new File(nodePath);
-
-
-
-
     }
 
     @Override
@@ -44,5 +58,20 @@ public class ProcessingTest extends PApplet{
     public static void main (String[] args) {
         ProcessingTest pt = new ProcessingTest();
         PApplet.runSketch(new String[]{"ProcessingTest"}, pt);
+        boolean hasNext = true;
+        String nextWeights;
+        while (hasNext){
+            try {
+                nextWeights = weightsReader.readLine();
+            }
+            catch (IOException e){
+                throw new RuntimeException(e);
+            }
+            System.out.println(nextWeights);
+            if (nextWeights == null){
+                hasNext = false;
+            }
+
+        }
     }
 }
