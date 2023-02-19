@@ -31,6 +31,8 @@ public class ProcessingTest2 extends PApplet {
             firstRow[i].render(this);
             secondRow[i].render(this);
             thirdRow[i].render(this);
+
+
         }
 
 
@@ -39,14 +41,25 @@ public class ProcessingTest2 extends PApplet {
             for (Node next : secondRow){
                 float weight = (float) Math.random();
                 weightBezier(first, next, weight);
+
+                next.setValue((float) Math.random());
+                next.render(this);
             }
+            first.setValue((float) Math.random());
+            first.render(this);
         }
 
         for (Node second : secondRow){
             for (Node third : thirdRow){
                 float weight = (float) Math.random();
                 weightBezier(second, third, weight);
+
+                third.setValue((float) Math.random());
+                third.render(this);
             }
+
+            second.setValue((float) Math.random());
+            second.render(this);
         }
 
         try {

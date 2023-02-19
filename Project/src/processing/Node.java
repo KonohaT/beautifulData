@@ -2,7 +2,7 @@ package src.processing;
 import processing.core.PApplet;
 
 public class Node {
-    private float weight; //should be between 0 and 1
+    private float value = 1; //should be between 0 and 1
     public float x;
     public float y;
     public int radius;
@@ -13,12 +13,13 @@ public class Node {
         this.radius = radius;
     }
 
-    public float getWeight(){
-        return weight;
+    public float getValue(){
+        return value;
     }
 
-    public void setWeight(float input){
-        weight = input;
+    public void setValue(float input){
+
+        value = input;
     }
 
     public void setPos(float x, float y){
@@ -27,8 +28,8 @@ public class Node {
     }
 
     public void render(PApplet sketch){
-        int blue = (int) (weight * 256);
-        sketch.fill(0, 0, blue);
+        int brightness = (int) (value * 256);
+        sketch.fill(brightness);
         sketch.ellipse(x, y, radius, radius);
     }
 }

@@ -57,7 +57,7 @@ public class ProcessingTest extends PApplet{
             float weight = 0.6f;
 
             Node node = new Node(xPos, yPos, 10);
-            node.setWeight(weight);
+            node.setValue(weight);
             node.render(this);
         }
     }
