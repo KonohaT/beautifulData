@@ -1,16 +1,14 @@
 package src.processing;
 import processing.core.PApplet;
+import java.lang.Math;
 
 import java.io.*;
-import java.util.concurrent.ThreadLocalRandom;//Checking branch merging
 
 
 public class ProcessingTest extends PApplet{
-    int w = 600;
-    int h = 400;
-    int movement = w / 100;
-    int y=h/2;
-    int x = w/2;
+    int w = 1000;
+    int h = 1000;
+
 
     String weightPath = "beautifulData/Project/NetworkData/weights.csv";
     String nodePath = "beautifulData/Project/NetworkData/nodePriority.csv";
@@ -39,25 +37,39 @@ public class ProcessingTest extends PApplet{
 
     @Override
     public void draw() {
-        background(60);
-        fill(255,255,255); // fill color red
-        stroke(0,0,255); // stroke color blue
+        background(20);
+        fill(153, 196, 230);
+        stroke(60);
         ellipseMode(CENTER); // ref. point to ellipse is its center
+        for (int i = 400; i > 50; i -= 50){
+            drawRing(20, w/2, h/2, i);
+        }
 
-        ellipse(x, y, 20, 20);
-        int randomX = ThreadLocalRandom.current().nextInt(0 - movement, movement);
-        int randomY = ThreadLocalRandom.current().nextInt(0 - movement, movement);
+    }
 
+    public void drawRing(int nodeCount, int centerX, int centerY, int radius){
+        double twoPi = Math.toRadians(360);
+        double step = twoPi / nodeCount;
 
+        for (double rad = 0; rad < twoPi; rad += step){
+            float xPos = (float) Math.cos(rad) * radius + centerX;
+            float yPos = (float) Math.sin(rad) * radius + centerY;
+            float weight = 0.6f;
 
-        // increment x and y
-        x += randomX;
-        y += randomY;
+            Node node = new Node(xPos, yPos, 10);
+            node.setWeight(weight);
+            node.render(this);
+        }
     }
 
     public static void main (String[] args) {
         ProcessingTest pt = new ProcessingTest();
         PApplet.runSketch(new String[]{"ProcessingTest"}, pt);
+
+
+
+
+        /*
         boolean hasNext = true;
         String nextWeights;
         while (hasNext){
@@ -73,5 +85,6 @@ public class ProcessingTest extends PApplet{
             }
 
         }
+        */
     }
 }
