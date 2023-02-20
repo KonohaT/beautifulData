@@ -31,7 +31,7 @@ public class Node {
         int brightness = (int) (value * 256);
         int darkness = ((int) (255 - value * 256));
         sketch.strokeWeight(0);
-        sketch.fill(darkness);
+        sketch.fill(brightness); //switch to brightness for dark mode
         sketch.ellipse(x, y, radius, radius);
     }
 }
