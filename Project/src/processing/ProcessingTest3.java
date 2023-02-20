@@ -3,13 +3,15 @@ import processing.core.PApplet;
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class ProcessingTest3 extends PApplet { //this test adds rows of different sizes and creates a ArrayList matrix for all nodes
-    int w = 800;
-    int h = 800;
+    int w = 1600;
+    int h = 1000;
 
     int rowCount = 4;
-    int[] rowNodes = {5, 10, 10 ,5};
+    int[] rowNodes = {64, 20, 20 , 10};
+
 
     int maxRowSize = Arrays.stream(rowNodes).max().getAsInt();
     int nodeIncrements = (h - 200) / (maxRowSize - 1);
@@ -27,11 +29,13 @@ public class ProcessingTest3 extends PApplet { //this test adds rows of differen
         int startingX = 100;
         for (int rowPlace = 0; rowPlace < rowCount; rowPlace++){
             ArrayList<Node> row = matrix[rowPlace];
-            int nodesForRow = rowNodes[rowPlace];
-            float startingY = (h / 2) - nodeIncrements * ((nodesForRow - 1) / 2);
+            float nodesInRow = (float) rowNodes[rowPlace];
+            float startingY = (h / 2) - (nodeIncrements * ((nodesInRow - 1) / 2));
+            System.out.println(startingY);
+            System.out.println(nodesInRow);
 
-            for (int nodePlace = 0; nodePlace < nodesForRow; nodePlace++){
-                Node node = new Node(startingX, startingY, 10);
+            for (int nodePlace = 0; nodePlace < nodesInRow; nodePlace++){
+                Node node = new Node(startingX, startingY, 15);
                 row.add(node);
 
                 startingY += nodeIncrements;
@@ -46,33 +50,48 @@ public class ProcessingTest3 extends PApplet { //this test adds rows of differen
     }
 
     public void draw() {
-        background(20);
+        background(255);
+        //background(0) //uncomment these several for inverted colors
+        ellipseMode(CENTER);
+
 
         //create table for current weights
         //create table for current node values
 
-        for (int rowPlace = 0; rowPlace < rowCount - 1; rowPlace++){
+        for (int rowPlace = 0; rowPlace < rowCount - 1; rowPlace++){ //renders all nodes except last row and adds weight lines between them.
             ArrayList<Node> row = matrix[rowPlace];
             ArrayList<Node> nextRow = matrix[rowPlace + 1];
             for (Node node : row){
+                node.setValue((float) Math.random());
                 node.render(this);
                 for (Node nextNode : nextRow){
-                    weightBezier(node, nextNode, 1);
+                    float weight = (float) Math.random();
+                    weightBezier(node, nextNode, weight);
                 }
             }
         }
-        for (Node node : matrix[rowCount - 1]){
+        for (Node node : matrix[rowCount - 1]){ //renders last row
+            node.setValue((float) Math.random());
             node.render(this);
         }
 
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
+        System.out.println("X: " + mouseX);
+        System.out.println("Y: " + mouseY);
     }
 
     public void weightBezier(Node node1, Node node2, float weight){
         noFill();
-        float blue = 255 - (weight * 255);
-        float red = weight * 255;
-        stroke(red);
+        strokeWeight(1);
+        float darkness = 255 - (weight * 255);
+        //float lightness = weight * 255;
+        //stroke(lightness);
+        stroke(darkness);
         float xDif = node1.x - node2.x;
         float yDif = node1.y - node2.y;
         double distance = Math.sqrt((xDif * xDif) + (yDif * yDif));

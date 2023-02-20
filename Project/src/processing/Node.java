@@ -29,7 +29,9 @@ public class Node {
 
     public void render(PApplet sketch){
         int brightness = (int) (value * 256);
-        sketch.fill(brightness);
+        int darkness = ((int) (255 - value * 256));
+        sketch.strokeWeight(0);
+        sketch.fill(darkness);
         sketch.ellipse(x, y, radius, radius);
     }
 }
