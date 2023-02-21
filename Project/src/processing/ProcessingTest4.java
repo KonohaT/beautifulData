@@ -1,5 +1,7 @@
 package src.processing;
 import processing.core.PApplet;
+
+import java.io.*;
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -18,24 +20,23 @@ public class ProcessingTest4 extends PApplet { //this test adds weights outside 
 
     int maxRowSize = Arrays.stream(rowNodes).max().getAsInt();
     int nodeIncrements = (h - 200) / (maxRowSize - 1);
-    int rowIncrements = (w - 200) / (rowCount - 1);
+    int rowIncrements = (w - 200) / (rowNodes.length - 1);
 
-    ArrayList<Node>[] matrix = new ArrayList[rowCount];
+    ArrayList<Node>[] matrix = new ArrayList[rowNodes.length];
 
     public void settings() {
         size(w, h);
 
-        for (int i = 0; i < rowCount; i++){
+        for (int i = 0; i < rowNodes.length; i++){
             matrix[i] = new ArrayList<Node>();
         }
 
         int startingX = 100;
-        for (int rowPlace = 0; rowPlace < rowCount; rowPlace++){
+        for (int rowPlace = 0; rowPlace < rowNodes.length; rowPlace++){
             ArrayList<Node> row = matrix[rowPlace];
             float nodesInRow = (float) rowNodes[rowPlace];
             float startingY = (h / 2) - (nodeIncrements * ((nodesInRow - 1) / 2));
-            System.out.println(startingY);
-            System.out.println(nodesInRow);
+
 
             for (int nodePlace = 0; nodePlace < nodesInRow; nodePlace++){
                 Node node = new Node(startingX, startingY, 15);
@@ -61,20 +62,20 @@ public class ProcessingTest4 extends PApplet { //this test adds weights outside 
         //create table for current weights
         //create table for current node values
 
-        for (int rowPlace = 0; rowPlace < rowCount - 1; rowPlace++){ //renders all nodes except last row and adds weight lines between them.
+        for (int rowPlace = 0; rowPlace < rowNodes.length - 1; rowPlace++){ //renders all nodes except last row and adds weight lines between them.
             ArrayList<Node> row = matrix[rowPlace];
             ArrayList<Node> nextRow = matrix[rowPlace + 1];
             for (Node node : row){
-                node.setValue((float) Math.random());
-                node.render(this);
                 for (Node nextNode : nextRow){
                     float weight = ThreadLocalRandom.current().nextFloat(weightMin, weightMax);
                     System.out.println(weight);
                     weightBezier(node, nextNode, weight);
                 }
+                node.setValue((float) Math.random());
+                node.render(this);
             }
         }
-        for (Node node : matrix[rowCount - 1]){ //renders last row
+        for (Node node : matrix[rowNodes.length - 1]){ //renders last row
             node.setValue((float) Math.random());
             node.render(this);
         }
@@ -126,14 +127,34 @@ public class ProcessingTest4 extends PApplet { //this test adds weights outside 
 
 
 
-    //public ArrayList<Node>[] retrieveWeights(int epoch) {}
-        //retrieve values
+    private static File retrieveWeights(int epoch) { //remove static after testing
+        String unfinishedPath = "beautifulData/Project/NetworkData/weights_epoch_";
+        String finishedPath = unfinishedPath + epoch + ".csv";
+        File weights = new File(finishedPath);
+        return weights;
+    }
 
-        //format into ArrayList
+    public static void formatWeights(int epoch) throws IOException { //remove static after testing
+        File weightsFile = retrieveWeights(epoch);
+        BufferedReader weightsReader;
+        try {
+            weightsReader = new BufferedReader(new FileReader(weightsFile));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String line = weightsReader.readLine();
+        while ((line = weightsReader.readLine()) != null){
+            System.out.println(line);
+        }
+    }
 
 
     public static void main(String[] args) {
-
+        try {
+            formatWeights(1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         ProcessingTest4 pt = new ProcessingTest4();
         PApplet.runSketch(new String[]{"ProcessingTest4"}, pt);
     }

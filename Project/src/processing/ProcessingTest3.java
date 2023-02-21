@@ -14,19 +14,19 @@ public class ProcessingTest3 extends PApplet { //this test adds rows of differen
 
     int maxRowSize = Arrays.stream(rowNodes).max().getAsInt();
     int nodeIncrements = (h - 200) / (maxRowSize - 1);
-    int rowIncrements = (w - 200) / (rowCount - 1);
+    int rowIncrements = (w - 200) / (rowNodes.length - 1);
 
-    ArrayList<Node>[] matrix = new ArrayList[rowCount];
+    ArrayList<Node>[] matrix = new ArrayList[rowNodes.length];
 
     public void settings() {
         size(w, h);
 
-        for (int i = 0; i < rowCount; i++){
+        for (int i = 0; i < rowNodes.length; i++){
             matrix[i] = new ArrayList<Node>();
         }
 
         int startingX = 100;
-        for (int rowPlace = 0; rowPlace < rowCount; rowPlace++){
+        for (int rowPlace = 0; rowPlace < rowNodes.length; rowPlace++){
             ArrayList<Node> row = matrix[rowPlace];
             float nodesInRow = (float) rowNodes[rowPlace];
             float startingY = (h / 2) - (nodeIncrements * ((nodesInRow - 1) / 2));
@@ -57,7 +57,7 @@ public class ProcessingTest3 extends PApplet { //this test adds rows of differen
         //create table for current weights
         //create table for current node values
 
-        for (int rowPlace = 0; rowPlace < rowCount - 1; rowPlace++){ //renders all nodes except last row and adds weight lines between them.
+        for (int rowPlace = 0; rowPlace < rowNodes.length - 1; rowPlace++){ //renders all nodes except last row and adds weight lines between them.
             ArrayList<Node> row = matrix[rowPlace];
             ArrayList<Node> nextRow = matrix[rowPlace + 1];
             for (Node node : row){
@@ -69,7 +69,7 @@ public class ProcessingTest3 extends PApplet { //this test adds rows of differen
                 }
             }
         }
-        for (Node node : matrix[rowCount - 1]){ //renders last row
+        for (Node node : matrix[rowNodes.length - 1]){ //renders last row
             node.setValue((float) Math.random());
             node.render(this);
         }
