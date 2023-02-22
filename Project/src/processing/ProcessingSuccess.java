@@ -101,7 +101,7 @@ public class ProcessingSuccess extends PApplet { //this test adds weight input
             //node.setValue((float) Math.random());
             node.render(this);
         }
-        saveFrame("frame#####.png");
+        //saveFrame("frame#####.png");
         // creates a png of each epoch starting at 1. I used ImageMagick to combine these into a gif. command: convert -delay 30 *.png +repage -loop 0 learning.gif
         long endTime = System.currentTimeMillis();
         long totalMillis = (endTime - startTime);
