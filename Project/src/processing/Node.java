@@ -28,7 +28,7 @@ public class Node {
     }
 
     public void render(PApplet sketch){
-        int brightness = (int) (value * 256);
+        int brightness = (int) (value * 255);
         int darkness = ((int) (255 - value * 256));
         sketch.strokeWeight(0);
         sketch.fill(brightness); //switch to brightness for dark mode
