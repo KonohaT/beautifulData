@@ -9,7 +9,7 @@ https://drive.google.com/drive/folders/18ghm4khtX-jcQIHugLnb-xFa9-jxOTjy?usp=sha
 
 
 Use: 
-First run Main.py to generate the weight epoch files. Then run ProcessingSuccess.java to generate the visualization. 
+First run Main.py in src/handwritten to generate the weight epoch files. Then run main.java in src/processing to generate the visualization. 
 If there are already epoch files, delete them before starting. 
 
 If interested, the ProcessingTest files show the progression of the code...
