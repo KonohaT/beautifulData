@@ -1,6 +1,11 @@
 import numpy
 from NeuralNetwork import NeuralNetwork
 
+
+#link to training set https://drive.google.com/drive/folders/18ghm4khtX-jcQIHugLnb-xFa9-jxOTjy?usp=share_link
+
+
+
 def train(nn, training_data_list, epochs=1):
     for epoch in range(epochs):
         for record in training_data_list:
