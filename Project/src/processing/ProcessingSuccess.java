@@ -188,6 +188,6 @@ public class ProcessingSuccess extends PApplet { //this test adds weight input
 
     public static void main(String[] args) {
         ProcessingSuccess pt = new ProcessingSuccess();
-        PApplet.runSketch(new String[]{"ProcessingTest5"}, pt);
+        PApplet.runSketch(new String[]{"ProcessingSuccess"}, pt);
     }
 }
