@@ -1,5 +1,6 @@
 package src.processing;
 import processing.core.PApplet; //To use Processing, import org.processing:core.3.3.7 from Maven
+//some newer versions of MacOS seem to have issues with Processing, but these haven't appeared in Windows or Linux
 
 import java.io.*;
 import java.lang.Math;
