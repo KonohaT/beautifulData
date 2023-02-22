@@ -1,3 +1,5 @@
+import os
+
 import numpy
 import scipy
 import csv
@@ -37,7 +39,11 @@ class NeuralNetwork:
                                         numpy.transpose(inputs))
 
     def save_weights(self, epoch):
-        with open(f'weights_epoch_{epoch}.csv', mode='w', newline='') as f:
+        folder_path = 'NetworkData/'
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        file_path = folder_path + f'weights_epoch_{epoch}.csv'
+        with open(file_path, mode='w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['Weight', 'Input Node', 'Hidden Node', 'Output Node', 'Layer Index'])
             for i, wih_row in enumerate(self.wih):
