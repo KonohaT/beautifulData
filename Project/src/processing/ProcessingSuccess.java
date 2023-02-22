@@ -1,5 +1,5 @@
 package src.processing;
-import processing.core.PApplet;
+import processing.core.PApplet; //To use Processing, import org.processing:core.3.3.7 from Maven
 
 import java.io.*;
 import java.lang.Math;
