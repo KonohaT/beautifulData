@@ -60,11 +60,12 @@ public class ProcessingSuccess extends PApplet { //this test adds weight input
         background(0); //uncomment these several for inverted colors
         ellipseMode(CENTER);
 
-        String unfinishedPath = "beautifulData/Project/NetworkData/weights_epoch_";
+        String unfinishedPath = "beautifulData/Project/src/handwritten/NetworkData/weights_epoch_";
+        // /home/treeleafer/Software Spaghetti/CS II/beautifulData/beautifulData/Project/src/handwritten/NetworkData/weights_epoch_0.csv
         String finishedPath = unfinishedPath + filePlace + ".csv";
 
         File weights = new File(finishedPath);
-        while (!weights.exists()){
+        while (!weights.exists()){ //this allows both programs to run simultaneously, but means this will run indefinitely.
             weights = new File(finishedPath);
 
             try {
@@ -100,7 +101,7 @@ public class ProcessingSuccess extends PApplet { //this test adds weight input
             //node.setValue((float) Math.random());
             node.render(this);
         }
-        //saveFrame("frame#####.png");
+        saveFrame("frame#####.png");
         // creates a png of each epoch starting at 1. I used ImageMagick to combine these into a gif. command: convert -delay 30 *.png +repage -loop 0 learning.gif
         long endTime = System.currentTimeMillis();
         long totalMillis = (endTime - startTime);
