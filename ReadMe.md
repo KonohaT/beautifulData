@@ -5,6 +5,8 @@ This is a machine learning visualizer that displays the neural network of a simp
 Here are the visuals created from this project:
 
 
+Blue lines represent positive weights, and orange lines represent negative weights. The thicker the line, the closer the absolute weight value is to 1. 
+
 ![success](https://user-images.githubusercontent.com/71115970/221233290-85bde198-41b0-406b-83e9-502de676b1e9.gif)
 
 
